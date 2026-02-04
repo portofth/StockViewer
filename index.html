@@ -21,7 +21,7 @@
         .pulse-red { animation: pulseRed 2s infinite; border: 3px solid #EF4444; box-shadow: 0 0 20px rgba(239, 68, 68, 0.4); }
         @keyframes pulseRed { 0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); } 70% { box-shadow: 0 0 0 15px rgba(239, 68, 68, 0); } 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); } }
 
-        /* Animação  Toast */
+        /* Toast Animation */
         @keyframes slideDown { from { transform: translateY(-100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         .toast-enter { animation: slideDown 0.5s forwards; }
     </style>
@@ -42,7 +42,7 @@
                       <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
                       <span class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
                     </span>
-                    <p class="text-xs text-gray-500 uppercase tracking-widest font-semibold" id="status-text">Iniciando...</p>
+                    <p class="text-xs text-gray-500 uppercase tracking-widest font-semibold" id="status-text">Conectando Vercel...</p>
                 </div>
             </div>
             
@@ -83,7 +83,7 @@
                     <button type="button" onclick="clearAlert()" class="flex-1 px-4 py-3 rounded-xl border border-red-900/30 text-red-500 hover:bg-red-900/10 transition text-sm font-bold">Limpar</button>
                     <button type="submit" class="flex-1 px-4 py-3 rounded-xl bg-blue-600 text-white font-bold hover:bg-blue-700 shadow-lg transition text-sm">Salvar</button>
                 </div>
-                <p class="text-[10px] text-gray-500 text-center mt-2">Monitorando via TradingView (10s)</p>
+                <p class="text-[10px] text-gray-500 text-center mt-2">Monitorando via Vercel (10s)</p>
             </form>
         </div>
     </div>
@@ -91,8 +91,7 @@
     <script>
         // --- CONFIGURAÇÕES ---
         const MONITOR_INTERVAL = 10000; 
-        const BRAPI_TOKEN = 'tr1TtVpKiTdTG8EuRpoPru'; 
-
+        
         // Elementos Globais
         const gridElement = document.getElementById('stock-grid');
         const formElement = document.getElementById('stock-form');
@@ -191,15 +190,16 @@
             }, 30000); 
         }
 
-        // --- BUSCA NA BRAPI (AÇÕES E LOGOS) ---
+        // --- BUSCA (VIA VERCEL SERVERLESS) ---
         async function loadAvailableTickers() {
             try {
-                const response = await fetch(`https://brapi.dev/api/quote/list?token=${BRAPI_TOKEN}`);
+                // ALTERAÇÃO: Chama o backend da Vercel em vez da Brapi direta
+                const response = await fetch('/api/search');
                 const data = await response.json();
                 if (data.stocks) availableStocks = data.stocks;
             } catch (error) { 
-                console.error("Erro lista Brapi:", error); 
-                statusText.innerText = "Erro na Busca";
+                console.error("Erro lista:", error); 
+                statusText.innerText = "Erro Busca";
                 statusText.className = "text-xs text-red-500 uppercase tracking-widest font-semibold";
             }
         }
@@ -219,8 +219,6 @@
                     const li = document.createElement('li');
                     li.className = "px-4 py-3 hover:bg-gray-800 cursor-pointer border-b border-gray-700 flex items-center gap-3";
                     
-                    // LÓGICA DE EXIBIÇÃO INTELIGENTE
-                    // Se o nome for igual ao ticker, exibe apenas uma linha com o ticker em destaque
                     const isNameDuplicate = m.name === m.stock;
                     
                     li.innerHTML = `
@@ -241,7 +239,6 @@
             } else { autocompleteList.classList.add('hidden'); }
         });
 
-        // Esconder lista ao clicar fora
         document.addEventListener('click', (e) => { 
             if(!formElement.contains(e.target)) autocompleteList.classList.add('hidden'); 
         });
@@ -307,7 +304,7 @@
             });
         }
 
-        // 3. MONITORAMENTO
+        // --- MONITORAMENTO (VIA VERCEL SERVERLESS) ---
         async function monitorAlertsTV() {
             if (tickers.length === 0) return;
             statusText.innerText = "Sincronizando...";
@@ -316,7 +313,8 @@
             const symbolsFormatted = tickers.map(t => `BMFBOVESPA:${t}`);
 
             try {
-                const response = await fetch(`https://corsproxy.io/?https://scanner.tradingview.com/brazil/scan?_=${Date.now()}`, {
+                // ALTERAÇÃO: Chama o backend da Vercel em vez do proxy público
+                const response = await fetch('/api/monitor', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ "symbols": { "tickers": symbolsFormatted }, "columns": ["close", "change"] })
@@ -453,7 +451,7 @@
         function saveTickers() { localStorage.setItem('my_stocks', JSON.stringify(tickers)); renderGrid(); }
         window.removeStock = (t) => { tickers = tickers.filter(x => x !== t); saveTickers(); }
 
-       
+        // Start
         init();
         setInterval(monitorAlertsTV, MONITOR_INTERVAL);
 
