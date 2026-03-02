@@ -71,13 +71,44 @@
             </div>
             <form id="alert-form" class="space-y-5">
                 <div class="grid grid-cols-2 gap-3">
-                    <div><label class="block text-[10px] uppercase text-gray-500 font-bold mb-1.5">Preço > Que</label><div class="flex items-center bg-gray-800 rounded-lg px-3 border border-gray-700 focus-within:border-blue-500"><span class="text-gray-500 mr-1 text-xs">R$</span><input type="number" step="0.01" id="alert-price-high" class="bg-transparent w-full py-3 focus:outline-none text-white font-bold text-sm" placeholder="--"></div></div>
-                    <div><label class="block text-[10px] uppercase text-gray-500 font-bold mb-1.5">Preço < Que</label><div class="flex items-center bg-gray-800 rounded-lg px-3 border border-gray-700 focus-within:border-blue-500"><span class="text-gray-500 mr-1 text-xs">R$</span><input type="number" step="0.01" id="alert-price-low" class="bg-transparent w-full py-3 focus:outline-none text-white font-bold text-sm" placeholder="--"></div></div>
+                    <div>
+                        <label class="block text-[10px] uppercase text-gray-500 font-bold mb-1.5">Preço > Que</label>
+                        <div class="flex items-center bg-gray-800 rounded-lg px-3 border border-gray-700 focus-within:border-blue-500">
+                            <span class="text-gray-500 mr-1 text-xs">R$</span>
+                            <input type="number" step="0.01" id="alert-price-high" class="bg-transparent w-full py-3 focus:outline-none text-white font-bold text-sm" placeholder="--">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] uppercase text-gray-500 font-bold mb-1.5">Preço < Que</label>
+                        <div class="flex items-center bg-gray-800 rounded-lg px-3 border border-gray-700 focus-within:border-blue-500">
+                            <span class="text-gray-500 mr-1 text-xs">R$</span>
+                            <input type="number" step="0.01" id="alert-price-low" class="bg-transparent w-full py-3 focus:outline-none text-white font-bold text-sm" placeholder="--">
+                        </div>
+                    </div>
                 </div>
-                <div class="relative py-2"><div class="absolute inset-0 flex items-center"><div class="w-full border-t border-gray-800"></div></div><div class="relative flex justify-center"><span class="px-2 bg-gray-900 text-[10px] text-gray-600 uppercase font-bold">Ou Variação %</span></div></div>
+                <div class="relative py-2">
+                    <div class="absolute inset-0 flex items-center">
+                        <div class="w-full border-t border-gray-800"></div>
+                    </div>
+                    <div class="relative flex justify-center">
+                        <span class="px-2 bg-gray-900 text-[10px] text-gray-600 uppercase font-bold">Ou Variação %</span>
+                    </div>
+                </div>
                 <div class="grid grid-cols-2 gap-3">
-                    <div><label class="block text-[10px] uppercase text-gray-500 font-bold mb-1.5">Alta %</label><div class="flex items-center bg-gray-800 rounded-lg px-3 border border-gray-700 focus-within:border-blue-500"><span class="text-green-500 mr-1 text-xs">▲</span><input type="number" step="0.1" id="alert-percent-high" class="bg-transparent w-full py-3 focus:outline-none text-white font-bold text-sm" placeholder="%"></div></div>
-                    <div><label class="block text-[10px] uppercase text-gray-500 font-bold mb-1.5">Queda %</label><div class="flex items-center bg-gray-800 rounded-lg px-3 border border-gray-700 focus-within:border-blue-500"><span class="text-red-500 mr-1 text-xs">▼</span><input type="number" step="0.1" id="alert-percent-low" class="bg-transparent w-full py-3 focus:outline-none text-white font-bold text-sm" placeholder="%"></div></div>
+                    <div>
+                        <label class="block text-[10px] uppercase text-gray-500 font-bold mb-1.5">Alta %</label>
+                        <div class="flex items-center bg-gray-800 rounded-lg px-3 border border-gray-700 focus-within:border-blue-500">
+                            <span class="text-green-500 mr-1 text-xs">▲</span>
+                            <input type="number" step="0.1" id="alert-percent-high" class="bg-transparent w-full py-3 focus:outline-none text-white font-bold text-sm" placeholder="%">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] uppercase text-gray-500 font-bold mb-1.5">Queda %</label>
+                        <div class="flex items-center bg-gray-800 rounded-lg px-3 border border-gray-700 focus-within:border-blue-500">
+                            <span class="text-red-500 mr-1 text-xs">▼</span>
+                            <input type="number" step="0.1" id="alert-percent-low" class="bg-transparent w-full py-3 focus:outline-none text-white font-bold text-sm" placeholder="%">
+                        </div>
+                    </div>
                 </div>
                 <div class="pt-4 flex gap-3">
                     <button type="button" onclick="clearAlert()" class="flex-1 px-4 py-3 rounded-xl border border-red-900/30 text-red-500 hover:bg-red-900/10 transition text-sm font-bold">Limpar</button>
@@ -91,8 +122,8 @@
     <script>
         // --- CONFIGURAÇÕES ---
         const MONITOR_INTERVAL = 10000; 
-        
-        // Elementos Globais
+
+        // --- ELEMENTOS GLOBAIS ---
         const gridElement = document.getElementById('stock-grid');
         const formElement = document.getElementById('stock-form');
         const inputElement = document.getElementById('ticker-input');
@@ -100,8 +131,7 @@
         const emptyMsgElement = document.getElementById('empty-msg');
         const statusText = document.getElementById('status-text');
         const toastContainer = document.getElementById('toast-container');
-        
-        // Modal
+
         const alertModal = document.getElementById('alert-modal');
         const modalTickerName = document.getElementById('modal-ticker-name');
         const inputPriceHigh = document.getElementById('alert-price-high');
@@ -110,7 +140,7 @@
         const inputPercentLow = document.getElementById('alert-percent-low');
         const alertForm = document.getElementById('alert-form');
 
-        // Estado
+        // --- ESTADO ---
         let tickers = JSON.parse(localStorage.getItem('my_stocks')) || ['PETR4', 'VALE3', 'ITUB4'];
         let alerts = JSON.parse(localStorage.getItem('my_alerts')) || {};
         let activeTriggers = {}; 
@@ -124,7 +154,7 @@
             monitorAlertsTV(); 
         }
 
-        // --- SOM DE SINO (Web Audio API) ---
+        // --- ÁUDIO (SINO) ---
         function initAudioContext() {
             if (!audioCtx) {
                 audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -137,28 +167,34 @@
         function playBellSound() {
             initAudioContext(); 
             const now = audioCtx.currentTime;
-            
-            const osc1 = audioCtx.createOscillator();
+
+            const osc1 = audioCtx.createOscillator(); 
             const gain1 = audioCtx.createGain();
-            const osc2 = audioCtx.createOscillator();
+            const osc2 = audioCtx.createOscillator(); 
             const gain2 = audioCtx.createGain();
 
-            osc1.type = 'sine'; osc1.frequency.value = 800; 
-            osc1.connect(gain1); gain1.connect(audioCtx.destination);
+            osc1.type = 'sine'; 
+            osc1.frequency.value = 800; 
+            osc1.connect(gain1); 
+            gain1.connect(audioCtx.destination);
 
-            osc2.type = 'sine'; osc2.frequency.value = 2400; 
-            osc2.connect(gain2); gain2.connect(audioCtx.destination);
+            osc2.type = 'sine'; 
+            osc2.frequency.value = 2400; 
+            osc2.connect(gain2); 
+            gain2.connect(audioCtx.destination);
 
-            gain1.gain.setValueAtTime(0, now);
-            gain1.gain.linearRampToValueAtTime(0.2, now + 0.01);
+            gain1.gain.setValueAtTime(0, now); 
+            gain1.gain.linearRampToValueAtTime(0.2, now + 0.01); 
             gain1.gain.exponentialRampToValueAtTime(0.001, now + 2.5);
 
-            gain2.gain.setValueAtTime(0, now);
+            gain2.gain.setValueAtTime(0, now); 
             gain2.gain.linearRampToValueAtTime(0.1, now + 0.01); 
             gain2.gain.exponentialRampToValueAtTime(0.001, now + 1.0); 
 
-            osc1.start(now); osc2.start(now);
-            osc1.stop(now + 3); osc2.stop(now + 3);
+            osc1.start(now); 
+            osc2.start(now); 
+            osc1.stop(now + 3); 
+            osc2.stop(now + 3);
         }
 
         // --- NOTIFICAÇÃO (TOAST) ---
@@ -181,22 +217,23 @@
 
             toastContainer.appendChild(toast);
 
-            setTimeout(() => {
+            setTimeout(() => { 
                 if(toast.parentElement) { 
-                    toast.style.opacity = '0';
-                    toast.style.transform = 'translateY(-100%)';
-                    setTimeout(() => toast.remove(), 500);
-                }
+                    toast.style.opacity = '0'; 
+                    toast.style.transform = 'translateY(-100%)'; 
+                    setTimeout(() => toast.remove(), 500); 
+                } 
             }, 30000); 
         }
 
-        // --- BUSCA (VIA VERCEL SERVERLESS) ---
+        // --- BUSCA (VIA VERCEL) ---
         async function loadAvailableTickers() {
             try {
-                // ALTERAÇÃO: Chama o backend da Vercel em vez da Brapi direta
-                const response = await fetch('/api/search');
+                const response = await fetch('/api/search'); 
                 const data = await response.json();
-                if (data.stocks) availableStocks = data.stocks;
+                if (data.stocks) {
+                    availableStocks = data.stocks;
+                }
             } catch (error) { 
                 console.error("Erro lista:", error); 
                 statusText.innerText = "Erro Busca";
@@ -209,7 +246,10 @@
             const val = this.value.toUpperCase(); 
             autocompleteList.innerHTML = '';
             
-            if (!val) { autocompleteList.classList.add('hidden'); return; }
+            if (!val) { 
+                autocompleteList.classList.add('hidden'); 
+                return; 
+            }
             
             const matches = availableStocks.filter(i => i.stock.toUpperCase().includes(val) || i.name.toUpperCase().includes(val)).slice(0,6);
             
@@ -219,7 +259,9 @@
                     const li = document.createElement('li');
                     li.className = "px-4 py-3 hover:bg-gray-800 cursor-pointer border-b border-gray-700 flex items-center gap-3";
                     
-                    const isNameDuplicate = m.name === m.stock;
+                    const safeName = (m.name || "").trim().toUpperCase();
+                    const safeStock = (m.stock || "").trim().toUpperCase();
+                    const isNameDuplicate = safeName === safeStock || safeName === "";
                     
                     li.innerHTML = `
                         <img src="${m.logo}" class="w-8 h-8 rounded-full bg-white object-contain p-0.5 flex-shrink-0">
@@ -232,38 +274,49 @@
                     li.onclick = () => { 
                         inputElement.value = m.stock; 
                         autocompleteList.classList.add('hidden'); 
-                        if(!tickers.includes(m.stock)) { tickers.push(m.stock); saveTickers(); inputElement.value = ''; } 
+                        if(!tickers.includes(m.stock)) { 
+                            tickers.push(m.stock); 
+                            saveTickers(); 
+                            inputElement.value = ''; 
+                        } 
                     };
                     autocompleteList.appendChild(li);
                 });
-            } else { autocompleteList.classList.add('hidden'); }
+            } else { 
+                autocompleteList.classList.add('hidden'); 
+            }
         });
 
         document.addEventListener('click', (e) => { 
-            if(!formElement.contains(e.target)) autocompleteList.classList.add('hidden'); 
+            if(!formElement.contains(e.target)) {
+                autocompleteList.classList.add('hidden'); 
+            }
         });
         
         formElement.onsubmit = (e) => { e.preventDefault(); };
 
-        // --- RENDERIZAÇÃO GRID ---
+        // --- RENDERIZAÇÃO GRID COM AUTO-RECOVERY ---
         function renderGrid() {
             gridElement.innerHTML = ''; 
-            if (tickers.length === 0) { emptyMsgElement.classList.remove('hidden'); return; } 
-            else { emptyMsgElement.classList.add('hidden'); }
-
+            
+            if (tickers.length === 0) { 
+                emptyMsgElement.classList.remove('hidden'); 
+                return; 
+            } else { 
+                emptyMsgElement.classList.add('hidden'); 
+            }
+            
             tickers.forEach(symbol => {
                 const hasAlert = alerts[symbol];
                 const bellClass = hasAlert ? "text-blue-500 bg-blue-500/10" : "text-gray-300 hover:text-white";
-
+                
                 const card = document.createElement('div');
                 card.className = "relative bg-gray-900 rounded-2xl border border-gray-800 shadow-lg overflow-hidden h-[240px] transition-all hover:border-gray-600 group flex flex-col";
                 card.id = `card-${symbol}`;
 
-                const alertHtml = `
+                card.innerHTML = `
                     <div id="alert-msg-${symbol}" class="hidden w-full text-white text-xs font-bold text-center py-1.5 uppercase tracking-widest shrink-0 z-30 transition-all"></div>
-                `;
-
-                const controlsHtml = `
+                    
                     <div class="absolute top-2 right-2 z-20 flex gap-1 bg-black/50 backdrop-blur-sm rounded-lg p-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                         <button onclick="openAlertModal('${symbol}')" class="p-1.5 rounded transition-colors ${bellClass}">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
@@ -274,46 +327,58 @@
                     </div>
                     
                     <div class="absolute bottom-2 left-2 z-20 pointer-events-none">
-                        <span id="tv-monitor-${symbol}" class="text-[9px] font-mono font-bold text-gray-500 bg-black/60 px-1.5 py-0.5 rounded backdrop-blur-sm border border-gray-700/50">
-                            Monitor: ...
-                        </span>
+                        <span id="tv-monitor-${symbol}" class="text-[9px] font-mono font-bold text-gray-500 bg-black/60 px-1.5 py-0.5 rounded backdrop-blur-sm border border-gray-700/50">Monitor: ...</span>
                     </div>
                 `;
 
                 const widgetContainer = document.createElement('div');
-                widgetContainer.className = "tradingview-widget-container w-full flex-1 relative";
-                widgetContainer.innerHTML = `<div class="tradingview-widget-container__widget h-full w-full"></div>`;
-
-                const script = document.createElement('script');
-                script.type = 'text/javascript';
-                script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js';
-                script.async = true;
-                script.innerHTML = JSON.stringify({
-                    "symbol": "BMFBOVESPA:" + symbol, 
-                    "width": "100%",
-                    "height": "100%",
-                    "colorTheme": "dark",
-                    "isTransparent": true, 
-                    "locale": "br"
-                });
-
-                card.innerHTML = alertHtml + controlsHtml;
+                widgetContainer.className = "w-full flex-1 relative min-h-[150px] flex items-center justify-center bg-[#131722]"; 
                 card.appendChild(widgetContainer); 
-                widgetContainer.appendChild(script); 
                 gridElement.appendChild(card);
+
+               
+                function loadTradingViewWidget(attempt = 1) {
+                    widgetContainer.innerHTML = `<div class="tradingview-widget-container__widget h-full w-full absolute inset-0"></div>`;
+                    
+                    const script = document.createElement('script');
+                    script.type = 'text/javascript';
+                    script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js';
+                    script.async = true;
+                    script.textContent = JSON.stringify({ 
+                        "symbol": "BMFBOVESPA:" + symbol, 
+                        "width": "100%", 
+                        "height": "100%", 
+                        "colorTheme": "dark", 
+                        "isTransparent": true, 
+                        "locale": "br" 
+                    });
+
+                    script.onerror = () => {
+                        if (attempt <= 5) {
+                            widgetContainer.innerHTML = `<span class="text-xs text-gray-500 animate-pulse px-4 text-center">Conexão instável. Reconectando (${attempt}/5)...</span>`;
+                            setTimeout(() => loadTradingViewWidget(attempt + 1), 3000); 
+                        } else {
+                            widgetContainer.innerHTML = `<span class="text-xs text-red-500 font-bold px-4 text-center">Bloqueado pela rede local ou antivírus.</span>`;
+                        }
+                    };
+
+                    widgetContainer.appendChild(script);
+                }
+
+                loadTradingViewWidget();
             });
         }
 
-        // --- MONITORAMENTO (VIA VERCEL SERVERLESS) ---
+        // --- MONITORAMENTO (VIA VERCEL) ---
         async function monitorAlertsTV() {
             if (tickers.length === 0) return;
-            statusText.innerText = "Sincronizando...";
+            
+            statusText.innerText = "Sincronizando..."; 
             statusText.className = "text-xs text-blue-400 uppercase tracking-widest font-semibold animate-pulse";
-
+            
             const symbolsFormatted = tickers.map(t => `BMFBOVESPA:${t}`);
-
+            
             try {
-                // ALTERAÇÃO: Chama o backend da Vercel em vez do proxy público
                 const response = await fetch('/api/monitor', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -321,137 +386,158 @@
                 });
                 
                 const json = await response.json();
-
+                
                 json.data.forEach(item => {
                     const symbol = item.s.split(':')[1];
                     const price = item.d[0];
                     const changePercent = item.d[1]; 
                     
-                    if (price) {
-                        processAlertLogic(symbol, price, changePercent);
-                        updateMonitorDisplay(symbol, price, changePercent);
+                    if (price) { 
+                        processAlertLogic(symbol, price, changePercent); 
+                        updateMonitorDisplay(symbol, price, changePercent); 
                     }
                 });
-
+                
                 const now = new Date();
-                statusText.innerText = `Atualizado às ${now.toLocaleTimeString()}`;
+                statusText.innerText = `Atualizado às ${now.toLocaleTimeString()}`; 
                 statusText.className = "text-xs text-green-500 uppercase tracking-widest font-semibold";
-
             } catch (e) {
                 console.error("Monitor Fail:", e);
-                statusText.innerText = "Erro Conexão";
+                statusText.innerText = "Erro Conexão"; 
                 statusText.className = "text-xs text-red-500 uppercase tracking-widest font-semibold";
             }
         }
 
         function updateMonitorDisplay(symbol, price, percent) {
             const el = document.getElementById(`tv-monitor-${symbol}`);
-            if(el) el.innerText = `R$ ${price.toFixed(2)} (${percent > 0 ? '+' : ''}${percent.toFixed(2)}%)`;
+            if(el) {
+                el.innerText = `R$ ${price.toFixed(2)} (${percent > 0 ? '+' : ''}${percent.toFixed(2)}%)`;
+            }
         }
 
+        // --- LOGICA DE ALERTAS ---
         function processAlertLogic(symbol, currentPrice, currentPercent) {
             const settings = alerts[symbol];
             const cardEl = document.getElementById(`card-${symbol}`);
             const alertMsg = document.getElementById(`alert-msg-${symbol}`);
             
-            if (!settings || !cardEl) {
-                cardEl.className = "relative bg-gray-900 rounded-2xl border border-gray-800 shadow-lg overflow-hidden h-[240px] transition-all hover:border-gray-600 group flex flex-col";
-                alertMsg.classList.add('hidden');
-                activeTriggers[symbol] = false;
-                return;
+            if (!settings || !cardEl) { 
+                if(cardEl) cardEl.className = "relative bg-gray-900 rounded-2xl border border-gray-800 shadow-lg overflow-hidden h-[240px] transition-all hover:border-gray-600 group flex flex-col"; 
+                if(alertMsg) alertMsg.classList.add('hidden'); 
+                activeTriggers[symbol] = false; 
+                return; 
             }
-
-            let triggered = false;
-            let type = '';
+            
+            let triggered = false; 
+            let type = ''; 
             let message = '';
-
-            if ((settings.priceHigh && currentPrice >= settings.priceHigh) || 
-                (settings.percentHigh && currentPercent >= settings.percentHigh)) {
-                triggered = true; type = 'high';
+            
+            if ((settings.priceHigh && currentPrice >= settings.priceHigh) || (settings.percentHigh && currentPercent >= settings.percentHigh)) { 
+                triggered = true; 
+                type = 'high'; 
                 message = `ALVO DE ALTA: R$ ${settings.priceHigh || settings.percentHigh + '%'}`; 
-            } 
-            else if ((settings.priceLow && currentPrice <= settings.priceLow) || 
-                     (settings.percentLow && currentPercent <= settings.percentLow)) {
-                triggered = true; type = 'low';
-                message = `ALVO DE BAIXA: R$ ${settings.priceLow || settings.percentLow + '%'}`;
+            } else if ((settings.priceLow && currentPrice <= settings.priceLow) || (settings.percentLow && currentPercent <= settings.percentLow)) { 
+                triggered = true; 
+                type = 'low'; 
+                message = `ALVO DE BAIXA: R$ ${settings.priceLow || settings.percentLow + '%'}`; 
             }
-
+            
             if (triggered) {
-                alertMsg.classList.remove('hidden');
+                alertMsg.classList.remove('hidden'); 
                 alertMsg.innerText = message;
                 
-                if (type === 'high') {
-                    cardEl.className = "relative bg-gray-900 rounded-2xl shadow-lg overflow-hidden h-[240px] pulse-green group flex flex-col";
-                    alertMsg.className = "w-full bg-green-600 text-white text-[10px] font-bold text-center py-1.5 uppercase tracking-widest shrink-0 z-30";
-                } else {
-                    cardEl.className = "relative bg-gray-900 rounded-2xl shadow-lg overflow-hidden h-[240px] pulse-red group flex flex-col";
-                    alertMsg.className = "w-full bg-red-600 text-white text-[10px] font-bold text-center py-1.5 uppercase tracking-widest shrink-0 z-30";
+                if (type === 'high') { 
+                    cardEl.className = "relative bg-gray-900 rounded-2xl shadow-lg overflow-hidden h-[240px] pulse-green group flex flex-col"; 
+                    alertMsg.className = "w-full bg-green-600 text-white text-[10px] font-bold text-center py-1.5 uppercase tracking-widest shrink-0 z-30"; 
+                } else { 
+                    cardEl.className = "relative bg-gray-900 rounded-2xl shadow-lg overflow-hidden h-[240px] pulse-red group flex flex-col"; 
+                    alertMsg.className = "w-full bg-red-600 text-white text-[10px] font-bold text-center py-1.5 uppercase tracking-widest shrink-0 z-30"; 
                 }
-
-                if (!activeTriggers[symbol]) {
-                    playBellSound();
-                    showGlobalNotification(symbol, message, type);
+                
+                if (!activeTriggers[symbol]) { 
+                    playBellSound(); 
+                    showGlobalNotification(symbol, message, type); 
                     activeTriggers[symbol] = true; 
                 }
-
             } else {
-                cardEl.className = "relative bg-gray-900 rounded-2xl border border-blue-900/30 shadow-lg overflow-hidden h-[240px] transition-all group flex flex-col";
-                alertMsg.classList.add('hidden');
+                cardEl.className = "relative bg-gray-900 rounded-2xl border border-blue-900/30 shadow-lg overflow-hidden h-[240px] transition-all group flex flex-col"; 
+                alertMsg.classList.add('hidden'); 
                 activeTriggers[symbol] = false; 
             }
         }
 
-        // INTERFACE MODAL
-        window.openAlertModal = function(symbol) {
-            currentEditingTicker = symbol;
-            modalTickerName.innerText = symbol;
-            alertModal.classList.remove('hidden');
-            inputPriceHigh.value = ''; inputPriceLow.value = ''; inputPercentHigh.value = ''; inputPercentLow.value = '';
+        // --- INTERFACE MODAL ---
+        window.openAlertModal = function(symbol) { 
+            currentEditingTicker = symbol; 
+            modalTickerName.innerText = symbol; 
+            alertModal.classList.remove('hidden'); 
+            inputPriceHigh.value = ''; 
+            inputPriceLow.value = ''; 
+            inputPercentHigh.value = ''; 
+            inputPercentLow.value = ''; 
             
-            if (alerts[symbol]) {
-                if(alerts[symbol].priceHigh) inputPriceHigh.value = alerts[symbol].priceHigh;
-                if(alerts[symbol].priceLow) inputPriceLow.value = alerts[symbol].priceLow;
-                if(alerts[symbol].percentHigh) inputPercentHigh.value = alerts[symbol].percentHigh;
-                if(alerts[symbol].percentLow) inputPercentLow.value = alerts[symbol].percentLow;
-            }
+            if (alerts[symbol]) { 
+                if(alerts[symbol].priceHigh) inputPriceHigh.value = alerts[symbol].priceHigh; 
+                if(alerts[symbol].priceLow) inputPriceLow.value = alerts[symbol].priceLow; 
+                if(alerts[symbol].percentHigh) inputPercentHigh.value = alerts[symbol].percentHigh; 
+                if(alerts[symbol].percentLow) inputPercentLow.value = alerts[symbol].percentLow; 
+            } 
         }
-        window.closeAlertModal = () => { alertModal.classList.add('hidden'); currentEditingTicker = null; };
         
-        window.clearAlert = () => {
-            if (currentEditingTicker && alerts[currentEditingTicker]) {
+        window.closeAlertModal = () => { 
+            alertModal.classList.add('hidden'); 
+            currentEditingTicker = null; 
+        };
+        
+        window.clearAlert = () => { 
+            if (currentEditingTicker && alerts[currentEditingTicker]) { 
                 delete alerts[currentEditingTicker]; 
                 localStorage.setItem('my_alerts', JSON.stringify(alerts)); 
-                renderGrid();
+                renderGrid(); 
                 processAlertLogic(currentEditingTicker, 0, 0); 
-                monitorAlertsTV();
-            }
-            closeAlertModal();
+                monitorAlertsTV(); 
+            } 
+            closeAlertModal(); 
         };
-
-        alertForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            if (!currentEditingTicker) return;
+        
+        alertForm.addEventListener('submit', (e) => { 
+            e.preventDefault(); 
+            if (!currentEditingTicker) return; 
+            
             const pHigh = parseFloat(inputPriceHigh.value); 
-            const pLow = parseFloat(inputPriceLow.value);
+            const pLow = parseFloat(inputPriceLow.value); 
             const perHigh = parseFloat(inputPercentHigh.value); 
-            const perLow = parseFloat(inputPercentLow.value);
-
-            if(!pHigh && !pLow && !perHigh && !perLow) { alert("Defina pelo menos um valor"); return; }
+            const perLow = parseFloat(inputPercentLow.value); 
+            
+            if(!pHigh && !pLow && !perHigh && !perLow) { 
+                alert("Defina pelo menos um valor"); 
+                return; 
+            } 
             
             alerts[currentEditingTicker] = { 
-                priceHigh: pHigh || null, priceLow: pLow || null,
-                percentHigh: perHigh || null, percentLow: perLow || null 
-            };
-            localStorage.setItem('my_alerts', JSON.stringify(alerts));
-            renderGrid();
-            closeAlertModal();
+                priceHigh: pHigh || null, 
+                priceLow: pLow || null, 
+                percentHigh: perHigh || null, 
+                percentLow: perLow || null 
+            }; 
+            
+            localStorage.setItem('my_alerts', JSON.stringify(alerts)); 
+            renderGrid(); 
+            closeAlertModal(); 
             monitorAlertsTV(); 
         });
+        
+        function saveTickers() { 
+            localStorage.setItem('my_stocks', JSON.stringify(tickers)); 
+            renderGrid(); 
+        }
+        
+        window.removeStock = (t) => { 
+            tickers = tickers.filter(x => x !== t); 
+            saveTickers(); 
+        }
 
-        function saveTickers() { localStorage.setItem('my_stocks', JSON.stringify(tickers)); renderGrid(); }
-        window.removeStock = (t) => { tickers = tickers.filter(x => x !== t); saveTickers(); }
-
-        // Start
+        // --- INICIALIZAÇÃO ---
         init();
         setInterval(monitorAlertsTV, MONITOR_INTERVAL);
 
